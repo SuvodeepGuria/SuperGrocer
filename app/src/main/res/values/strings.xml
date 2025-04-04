@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SuperGrocer</string>
+    <string name="sweet_tooth">Sweet Tooth</string>
+    <string name="stationery">Stationery</string>
+    <string name="pet_food">Pet Food</string>
+    <string name="packaged_food">Packaged Food</string>
+    <string name="munchies">Munchies</string>
+    <string name="kitchen_essentials">Kitchen Essentials</string>
+    <string name="vegetables">Fresh Vegetables</string>
+    <string name="cleaning_essentials">Cleaning Essentials</string>
+    <string name="bread_biscuits">Bread And Biscuits</string>
+    <string name="beverages">Beverages</string>
+    <string name="bath_body">Bath And Body</string>
+    <string name="fresh_fruits">Fresh Fruits</string>
+    <string name="dry_fruits">Dry Fruits</string>
+
+    <string name="shimla_apple">Shimla Apple</string>
+    <string name="papaya">Papaya</string>
+    <string name="pomegranate">Pomegranate</string>
+    <string name="banana">Banana</string>
+    <string name="pineapple">Pineapple</string>
+    <string name="pepsi">Pepsi</string>
+</resources>

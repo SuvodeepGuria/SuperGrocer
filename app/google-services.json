@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "658351586657",
+    "project_id": "supergrocer-9fada",
+    "storage_bucket": "supergrocer-9fada.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658351586657:android:da7cc9950c672e6a395920",
+        "android_client_info": {
+          "package_name": "com.suvodeep.supergrocer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658351586657-9rec0ogr2o2mqealgc0u2nqupfu4bcfi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suvodeep.supergrocer",
+            "certificate_hash": "58ca94cac3b68309048ce31c12934da6aa30543a"
+          }
+        },
+        {
+          "client_id": "658351586657-4es45elk4ltk7i97l4toditjaeqbbe4t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9aGIMGctz1xQ3V5vZeL7WCTPw2Sr5la0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658351586657-4es45elk4ltk7i97l4toditjaeqbbe4t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
