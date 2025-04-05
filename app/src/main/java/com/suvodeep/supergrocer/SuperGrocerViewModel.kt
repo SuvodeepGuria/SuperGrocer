@@ -40,18 +40,20 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
     private val _cartItem=MutableStateFlow<List<InternetItem>>(emptyList())
     val  cartItem:StateFlow<List<InternetItem>> get() = _cartItem.asStateFlow()
 
+    private val _selectedAddress=MutableStateFlow("")
+    val selectedAddress: StateFlow<String> get() = _selectedAddress
+
+    private val _orderItems = MutableStateFlow<List<Map<String, Any>>>(emptyList())
+    val orderItems: StateFlow<List<Map<String, Any>>> get() = _orderItems
+
     private val _grandTotal= MutableStateFlow(0)
     val grandTotal:StateFlow<Int> get() = _grandTotal
 
-    private val _quantity= MutableStateFlow(0)
-//    val quantity:StateFlow<Int> get() = _quantity.asStateFlow()
-    fun getQuantity(qty:Int){
-        _quantity.value=qty
-    }
+//    private val _quantity= MutableStateFlow(0)
+//    fun getQuantity(qty:Int){
+//        _quantity.value=qty
+//    }
 
-    fun getGrandTotal(grandTotal:Int){
-        _grandTotal.value=grandTotal
-    }
 
 //    private val _getSavedCartItems=MutableStateFlow<List<InternetItem>>(emptyList())
 //    val getSavedCartItems:StateFlow<List<InternetItem>> get() = _getSavedCartItems.asStateFlow()
@@ -90,6 +92,7 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
 //    val database = Firebase.database
 //    val cartRef = database.getReference("SuperGrocer User ${auth.currentUser?.uid}/cart")
     val addressRef = database.getReference("SuperGrocer User ${auth.currentUser?.uid}/address")
+    val orderRef=database.getReference("SuperGrocer User ${auth.currentUser?.uid}/order")
 
 //    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "cart_and_address")
 //    private val cartItemKey = stringPreferencesKey("cart_item")
@@ -97,6 +100,14 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
 
 //    @SuppressLint("StaticFieldLeak")
 //    private val context=application.applicationContext
+
+    fun getGrandTotal(grandTotal:Int){
+        _grandTotal.value=grandTotal
+    }
+
+    fun setSelectedAddressFromOrderScreen(address:String){
+        _selectedAddress.value=address
+    }
 
     fun updateText(updateText: String) {
         _uiState.update {
@@ -391,6 +402,45 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
         _onclickLogOut.value=value
     }
 
+    fun yourOrder(order: HashMap<String,Any>){
+        orderRef.push().setValue(order)
+//        orderRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for(childSnapShot in dataSnapshot.children){
+//                    val item=childSnapShot.getValue(InternetItem::class.java)
+//                    item?.let{
+//
+//                    }
+//
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Failed to read value
+////                Log.w(TAG, "Failed to read value.", error.toException())
+//            }
+//        })
+    }
+
+    fun readOrdersFromDatabase() {
+        orderRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val orderList = mutableListOf<Map<String, Any>>()
+                for (child in snapshot.children) {
+                    val order = child.value as? Map<String, Any>
+                    order?.let {
+                        orderList.add(it)
+                    }
+                }
+                _orderItems.value = orderList.reversed() // 🔁 reverse the list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Firebase", "Failed to load orders: ${error.message}")
+            }
+        })
+    }
+
     init{
         screenJob=viewModelScope.launch {
             delay(3000)
@@ -400,5 +450,8 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
         getInternetItems()
         readItemsFromDatabase()
         readAddressFromDatabase()
+        readOrdersFromDatabase()
     }
 }
+
+

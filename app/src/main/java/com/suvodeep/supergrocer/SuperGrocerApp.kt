@@ -56,6 +56,7 @@ import com.suvodeep.supergrocer.ui.screens.InternetItemScreen
 import com.suvodeep.supergrocer.ui.screens.LoginScreen
 import com.suvodeep.supergrocer.ui.screens.OrderScreen
 import com.suvodeep.supergrocer.ui.screens.SplashScreen
+import com.suvodeep.supergrocer.ui.screens.YourOrderScreen
 
 enum class SuperGrocerAppScreens(val title: String) {
     Home("SuperGrocer"),
@@ -65,7 +66,8 @@ enum class SuperGrocerAppScreens(val title: String) {
     Account("Account"),
     Order("Order"),
     Address("Address"),
-    ConfirmOrder("Confirm Order")
+    ConfirmOrder("Confirm Order"),
+    YourOrder("Your Orders")
 }
 
 var canNavigate = false
@@ -224,6 +226,9 @@ fun SuperGrocerApp(
                 }
                 composable(route=SuperGrocerAppScreens.ConfirmOrder.name){
                     ConfirmOrderScreen()
+                }
+                composable(route= SuperGrocerAppScreens.YourOrder.name) {
+                    YourOrderScreen(superGrocerViewModel)
                 }
             }
         }

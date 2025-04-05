@@ -514,7 +514,7 @@ fun CartScreen(
     val itemWithQuantity = cartItem.value.groupBy { it.itemName to it.itemCategoryId }
         .map { (_, groupedItems) -> ItemWithQuantity(groupedItems.first(), groupedItems.size) }
 
-    superGrocerViewModel.getQuantity(itemWithQuantity.size)
+//    superGrocerViewModel.getQuantity(itemWithQuantity.size)
 
     if (cartItem.value.isNotEmpty()) {
         LazyColumn {

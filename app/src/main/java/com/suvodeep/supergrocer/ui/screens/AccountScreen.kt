@@ -74,7 +74,8 @@ fun AccountScreen(
             ) {
                 AccountOption(title = "Add Address", onClick = {navController.navigate(
                     SuperGrocerAppScreens.Address.name) })
-                AccountOption(title = "Your Orders", onClick = {})
+                AccountOption(title = "Your Orders", onClick = {navController.navigate(
+                    SuperGrocerAppScreens.YourOrder.name)})
                 AccountOption(title = "Log Out", onClick = {
                     superGrocerViewModel.setLogOutState(true)
 //                    auth.signOut()

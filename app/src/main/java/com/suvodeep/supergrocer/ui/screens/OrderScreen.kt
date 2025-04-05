@@ -1,12 +1,10 @@
 package com.suvodeep.supergrocer.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +18,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
@@ -43,15 +40,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.razorpay.Checkout
 import com.suvodeep.supergrocer.MainActivity
 import com.suvodeep.supergrocer.SuperGrocerAppScreens
 import com.suvodeep.supergrocer.SuperGrocerViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.groupBy
 
 @Composable
 fun OrderScreen(superGrocerViewModel: SuperGrocerViewModel,
@@ -87,6 +88,7 @@ fun OrderScreen(superGrocerViewModel: SuperGrocerViewModel,
                         selected = selectedAddress == address,
                         onClick = { selectedAddress = address
                                   addressSelect.value=true
+                                  superGrocerViewModel.setSelectedAddressFromOrderScreen(address)
                                   },
                         colors = RadioButtonDefaults.colors(Color(255, 165, 0))
                     )
@@ -118,9 +120,7 @@ fun OrderScreen(superGrocerViewModel: SuperGrocerViewModel,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(8.dp)
                     )
-
-
-                    Box() {
+                    Box {
                         Column(modifier = Modifier.padding(horizontal = 25.dp)) {
                             Text("( To pay: ${superGrocerViewModel.grandTotal.collectAsState().value} )", modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right,
@@ -131,8 +131,6 @@ fun OrderScreen(superGrocerViewModel: SuperGrocerViewModel,
                                     selected = selectedOption == "COD",
                                     onClick = { selectedOption = "COD"
                                         buttonText="Place Order"
-//                                        FCMService.sendNotification("orders", "Order Placed!", "Your order has been successfully placed.")
-
                                     },
                                     colors = RadioButtonDefaults.colors(Color(255, 165, 0))
                                 )
@@ -177,6 +175,29 @@ fun OrderScreen(superGrocerViewModel: SuperGrocerViewModel,
                             CoroutineScope(Dispatchers.Main).launch {
                                 delay(1000)
                                 navController.navigate(SuperGrocerAppScreens.ConfirmOrder.name)
+                                val currentDateTime = SimpleDateFormat("dd/MM/yyyy\nhh:mm a", Locale.getDefault()).format(Date())
+                                val groupedCart = superGrocerViewModel.cartItem.value
+                                        .groupBy { it.itemName }
+                                    .map { (name, itemList) ->
+                                        val quantityCount = itemList.size
+                                        val imageUrl = itemList.first().imageResourceId
+                                        hashMapOf(
+                                            "name" to name,
+                                            "quantity" to "$quantityCount", // or just "$quantityCount"
+                                            "imageUrl" to imageUrl
+                                        )
+                                    }
+
+                                val order = hashMapOf(
+                                    "items" to groupedCart,
+                                    "paymentMethod" to "Cash on Delivery",
+                                    "totalPaid" to superGrocerViewModel.grandTotal.value,
+                                    "address" to superGrocerViewModel.selectedAddress.value,
+                                    "time&Date" to currentDateTime
+                                )
+
+                                superGrocerViewModel.yourOrder(order)
+
                                 CoroutineScope(Dispatchers.Main).launch {
                                     delay(7000)
                                     superGrocerViewModel.cleanCart()

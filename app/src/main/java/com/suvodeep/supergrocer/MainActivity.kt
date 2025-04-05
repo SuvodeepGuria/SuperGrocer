@@ -15,11 +15,10 @@ import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import com.suvodeep.supergrocer.ui.theme.SuperGrocerTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : ComponentActivity(),PaymentResultWithDataListener {
     private val superGrocerViewModel: SuperGrocerViewModel by viewModels()
@@ -49,7 +48,7 @@ class MainActivity : ComponentActivity(),PaymentResultWithDataListener {
                 options.put("name","SuperGrocer")
                 options.put("description","Grocery app")
                 //You can omit the image option to fetch the image from the Dashboard
-                options.put("image",R.drawable.supergrocerapplogo)
+                options.put("image", R.drawable.supergrocerapplogo)
                 options.put("theme.color", "#00FB0A5C");
                 options.put("currency","INR");
                 options.put("amount",superGrocerViewModel.grandTotal.value*100)
@@ -74,9 +73,33 @@ class MainActivity : ComponentActivity(),PaymentResultWithDataListener {
     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
         superGrocerViewModel.cleanCart()
         Toast.makeText(this, "Payment Success!\nYour Order has been placed successfully", Toast.LENGTH_SHORT).show()
+        val currentDateTime = SimpleDateFormat("dd/MM/yyyy\nhh:mm a", Locale.getDefault()).format(Date())
+
+        val groupedCart = superGrocerViewModel.cartItem.value
+            .groupBy { it.itemName }
+            .map { (name, itemList) ->
+                val quantityCount = itemList.size
+                val imageUrl = itemList.first().imageResourceId
+                hashMapOf(
+                    "name" to name,
+                    "quantity" to "$quantityCount", // or just "$quantityCount"
+                    "imageUrl" to imageUrl
+                )
+            }
+
+        val order = hashMapOf(
+            "items" to groupedCart,
+            "paymentMethod" to "Online",
+            "totalPaid" to superGrocerViewModel.grandTotal.value,
+            "address" to superGrocerViewModel.selectedAddress.value,
+            "time&Date" to currentDateTime
+        )
+
+        superGrocerViewModel.yourOrder(order)
+
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-//        Toast.makeText(this, "Error: $p1", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Payment Failed!", Toast.LENGTH_SHORT).show()
     }
 }
