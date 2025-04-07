@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -29,11 +30,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -46,7 +47,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.suvodeep.supergrocer.data.InternetItem
 import com.suvodeep.supergrocer.ui.screens.AccountScreen
 import com.suvodeep.supergrocer.ui.screens.AddressScreen
 import com.suvodeep.supergrocer.ui.screens.CartScreen
@@ -62,7 +62,6 @@ enum class SuperGrocerAppScreens(val title: String) {
     Home("SuperGrocer"),
     Items("Items"),
     Cart("Your Cart"),
-    //BannerClick("Items"),
     Account("Account"),
     Order("Order"),
     Address("Address"),
@@ -77,8 +76,7 @@ val auth= FirebaseAuth.getInstance()
 @Composable
 fun SuperGrocerApp(
     superGrocerViewModel: SuperGrocerViewModel, modifier: Modifier,
-    navController: NavHostController = rememberNavController(),
-    item: List<InternetItem>
+    navController: NavHostController = rememberNavController()
 ) {
     val user=superGrocerViewModel.user.collectAsState()
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -93,7 +91,7 @@ fun SuperGrocerApp(
         SplashScreen()
     }
     else if(user.value==null){
-        LoginScreen(superGrocerViewModel,navController)
+        LoginScreen(superGrocerViewModel)
     }else {
         Scaffold(
             topBar = {
@@ -146,10 +144,7 @@ fun SuperGrocerApp(
                                     if (cartItemNumber > 0) {
                                         Card(
                                             modifier = Modifier
-//                                                .width(20.dp)
-//                                                .height(26.dp)
                                                 .size(20.dp)
-//                                                .padding(bottom = 1.dp)
                                                 .align(alignment = Alignment.TopEnd),
                                             colors = CardDefaults.cardColors(Color.Red)
                                         ) {
@@ -161,8 +156,6 @@ fun SuperGrocerApp(
                                                     text = "$cartItemNumber",
                                                     fontSize = 12.sp,
                                                     fontWeight = FontWeight.ExtraBold,
-//                                                    modifier = Modifier.fillMaxSize(),
-//                                                    textAlign = TextAlign.Center,
                                                     color = Color.Black
                                                 )
                                             }
@@ -201,8 +194,7 @@ fun SuperGrocerApp(
                             Log.d("Navigation", "Navigating to: ${SuperGrocerAppScreens.Items.name}")
                             navController.navigate(SuperGrocerAppScreens.Items.name)
                         },
-                        navController,
-                        item
+                        navController
                     )
                 }
                 composable(route = SuperGrocerAppScreens.Items.name) {
@@ -240,12 +232,7 @@ fun SuperGrocerApp(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(68.dp)
-            //.background(Brush.linearGradient(colors = listOf(Color(0xFF2AF32F), Color(0xFFF3F5F7)))),
-            //color = Color(3, 169, 244, 69)
-            //.background(brush = Brush.linearGradient(olors = listOf(Color(0xFF2AF32F), Color(0xFFF3F5F7)))
-            //color = listOf(Color(0xFF2AF32F), Color(0xFFF3F5F7))
-
+                .height(68.dp).clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
         ) {
             Row(
                 modifier = Modifier

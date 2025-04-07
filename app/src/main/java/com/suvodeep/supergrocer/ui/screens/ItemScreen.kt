@@ -1,9 +1,6 @@
 package com.suvodeep.supergrocer.ui.screens
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,15 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,16 +30,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,13 +45,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.Navigator
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.suvodeep.supergrocer.R
 import com.suvodeep.supergrocer.SuperGrocerAppScreens
 import com.suvodeep.supergrocer.SuperGrocerViewModel
 import com.suvodeep.supergrocer.data.InternetItem
-import kotlin.random.Random
 
 @Composable
 fun ItemScreen(
@@ -68,30 +61,58 @@ fun ItemScreen(
     navController: NavController
 ) {
     val categoryName = superGrocerViewModel.uiState.collectAsState()
-//    val randomDiscount = remember { Random.nextInt(10, 30) }
-    val context = LocalContext.current
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.outofstock))
     val selectedCategory = stringResource(categoryName.value.onCategoryState)
     val database = items.filter {
         it.itemCategoryId.lowercase() == selectedCategory.lowercase()
     }
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = "$selectedCategory (${database.size})",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color(76, 175, 80),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        )
 
-//    LaunchedEffect(Unit) {
-//        superGrocerViewModel.getDiscount(randomDiscount)
-//    }
-
-    LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
-        items(database) {
-            ItemCard(
-                stringResourceId = it.itemName,
-                itemCategoryId = it.itemCategoryId,
-                itemQuantity = it.itemQuantity,
-                itemPrice = it.itemPrice,
-                imageResourceId = it.imageResourceId,
-                context = context,
-//                randomDiscount = randomDiscount,
-                superGrocerViewModel = superGrocerViewModel,
-                navController = navController
-            )
+        if (!database.isEmpty()) {
+            LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
+                items(database) {
+                    ItemCard(
+                        stringResourceId = it.itemName,
+                        itemCategoryId = it.itemCategoryId,
+                        itemQuantity = it.itemQuantity,
+                        itemPrice = it.itemPrice,
+                        imageResourceId = it.imageResourceId,
+                        superGrocerViewModel = superGrocerViewModel,
+                        navController = navController
+                    )
+                }
+            }
+        } else {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(modifier = Modifier.fillMaxSize().padding(bottom = 110.dp),
+                    verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    LottieAnimation(composition = composition, iterations = 1000, modifier = Modifier.size(200.dp))
+                    Text(
+                        text = "No items are available right now!!",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                    Button(
+                        onClick = { navController.navigate(SuperGrocerAppScreens.Home.name){popUpTo(0)} },
+                        colors = ButtonDefaults.buttonColors(Color.Transparent),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 100.dp)
+                    ) {
+                        Text("Go back to Home", color = Color.Gray)
+                    }
+                }
+            }
         }
     }
 }
@@ -135,8 +156,6 @@ fun ItemCard(
     itemQuantity: String,
     itemPrice: Int,
     imageResourceId: String,
-//    randomDiscount: Int,
-    context: Context,
     superGrocerViewModel: SuperGrocerViewModel,
     navController: NavController
 ) {
@@ -145,7 +164,7 @@ fun ItemCard(
     Box(modifier = Modifier.padding(5.dp)) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color = Color(147, 234, 8, 10),
+            color = Color(233, 30, 99, 18),
             shape = RoundedCornerShape(10.dp)
         ) {
             Column(

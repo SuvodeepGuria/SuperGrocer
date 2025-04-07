@@ -5,14 +5,13 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.suvodeep.supergrocer.SuperGrocerViewModel
 
 @Composable
-fun LoginScreen(superGrocerViewModel: SuperGrocerViewModel, navController: NavHostController){
+fun LoginScreen(superGrocerViewModel: SuperGrocerViewModel){
     val phoneNo=superGrocerViewModel.phoneNo.collectAsState()
     val context= LocalContext.current
     val opt=superGrocerViewModel.otp.collectAsState()

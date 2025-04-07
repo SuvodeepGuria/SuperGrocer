@@ -82,4 +82,3 @@ fun AutoScrollingLazyRow(
         }
     }
 }
-

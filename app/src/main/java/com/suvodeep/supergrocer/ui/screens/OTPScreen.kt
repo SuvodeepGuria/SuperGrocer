@@ -24,7 +24,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,14 +47,13 @@ import java.util.concurrent.TimeUnit
 fun OTPScreen(
     otp: String,
     superGrocerViewModel: SuperGrocerViewModel,
-//    phoneNo: State<String>,
     callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 ) {
     val context= LocalContext.current
     val verificationId = superGrocerViewModel.verificationId.collectAsState()
     val phoneNo=superGrocerViewModel.phoneNo.collectAsState()
-//    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.phoneverification))
     val timer by superGrocerViewModel.timer.collectAsState()
+
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(top = 100.dp), horizontalAlignment = Alignment.CenterHorizontally,

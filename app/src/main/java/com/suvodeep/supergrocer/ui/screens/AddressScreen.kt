@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,12 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.suvodeep.supergrocer.SuperGrocerViewModel
 
-//@Preview
 @Composable
 fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
     var fullName by remember { mutableStateOf("") }
-//    var middleName by remember { mutableStateOf("") }
-//    var lastName by remember { mutableStateOf("") }
     var phoneno by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
     var landmark by remember { mutableStateOf("") }
@@ -53,8 +51,6 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
     var city by remember { mutableStateOf("") }
 
     var fullNameError by remember { mutableStateOf(false) }
-//    var middleNameError by remember { mutableStateOf(false) }
-    var lastNameError by remember { mutableStateOf(false) }
     var phoneNoError by remember { mutableStateOf(false) }
     var addressError by remember { mutableStateOf(false) }
     var landmarkError by remember { mutableStateOf(false) }
@@ -68,8 +64,8 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize().imePadding()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(addressList.size) { savedAddress ->
@@ -78,11 +74,9 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
                     elevation = CardDefaults.cardElevation(4.dp)
-//                    colors = CardDefaults.cardColors(Color(3,6,65,8))
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(adrs, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-//                        Spacer(modifier = Modifier.height(4.dp))
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment =Alignment.TopEnd
@@ -90,8 +84,7 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
                             IconButton(onClick = { superGrocerViewModel.removeAddress(adrs) }) {
                                 Icon(
                                     Icons.Outlined.Delete,
-                                    contentDescription = "Delete Address",
-//                                    tint = Color.Red
+                                    contentDescription = "Delete Address"
                                 )
                             }
                         }
@@ -135,30 +128,7 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
                 )
                 if (fullNameError) Text("Full Name is required", color = Color.Red, fontSize = 12.sp)
             }
-//            item {
-//                OutlinedTextField(
-//                    value = middleName,
-//                    onValueChange = { middleName = it },
-//                    label = { Text("Middle Name (Optional)") },
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//            }
-//            item {
-//                OutlinedTextField(
-//                    value = lastName,
-//                    onValueChange = {
-//                        lastName = it
-//                        lastNameError = it.isBlank()
-//                    },
-//                    label = { Text("Last Name*") },
-//                    isError = lastNameError,
-//                    modifier = Modifier.fillMaxWidth(),
-//                    trailingIcon = {
-//                        if (lastNameError) Icon(Icons.Filled.Error, contentDescription = "Error")
-//                    }
-//                )
-//                if (lastNameError) Text("Last Name is required", color = Color.Red, fontSize = 12.sp)
-//            }
+//
             item {
                 OutlinedTextField(
                     value = phoneno,
@@ -263,13 +233,14 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
                 Button(
                     onClick = {
                         fullNameError = fullName.isBlank()
-//                        lastNameError = lastName.isBlank()
+                        phoneNoError=phoneno.isBlank()
                         addressError = address.isBlank()
+                        landmarkError=landmark.isBlank()
                         pincodeError = pincode.isBlank()
                         stateError = state.isBlank()
                         cityError = city.isBlank()
 
-                        if (!fullNameError && !lastNameError && !addressError && !pincodeError && !stateError && !cityError) {
+                        if (!fullNameError && !phoneNoError && !addressError && !landmarkError && !pincodeError && !stateError && !cityError) {
                             superGrocerViewModel./*updateAddress*/addAddressToDatabase(
                                 "${fullName.trim()}\n${phoneno.toString().trim()}\n${address.trim()}, ${landmark.trim()}, ${state.trim()}, ${city.trim()} - ${pincode.trim()}"
                             )
@@ -281,6 +252,8 @@ fun AddressScreen(superGrocerViewModel: SuperGrocerViewModel) {
                             address = ""
                             landmark = ""
                             pincode=""
+                            state=""
+                            city=""
                         }
                         Toast.makeText(context, "Address Saved", Toast.LENGTH_SHORT).show()
                         addAddress.value=!addAddress.value

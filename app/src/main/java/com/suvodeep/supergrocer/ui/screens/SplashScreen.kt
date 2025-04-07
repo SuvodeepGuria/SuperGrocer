@@ -69,32 +69,3 @@ fun SplashScreen() {
         )
     }
 }
-
-/*
-@Composable
-    fun WeatherAnimationScreen(onAnimationEnd: () -> Unit) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation))
-        val progress by animateLottieCompositionAsState(composition, iterations = 1, speed = 1.5f)
-
-        LaunchedEffect(Unit) {
-            delay(2000)
-            onAnimationEnd()
-        }
-
-        Box(
-            modifier = Modifier.fillMaxSize().background(
-                Brush.verticalGradient(
-                    colors = listOf(Color(0xFF79F3B8), Color(0xFFF3F5F7))
-                )
-            ),
-            contentAlignment = Alignment.Center
-        ) {
-            AnimatedVisibility(visible = composition != null, enter = fadeIn(), exit = fadeOut()) {
-                LottieAnimation(
-                    composition = composition,
-                    progress = { progress },
-                    modifier = Modifier.size(300.dp)
-                )
-            }
-        }
-    } */

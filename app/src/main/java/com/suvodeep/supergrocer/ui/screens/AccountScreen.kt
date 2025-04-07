@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,7 +42,6 @@ import com.suvodeep.supergrocer.SuperGrocerAppScreens
 import com.suvodeep.supergrocer.SuperGrocerViewModel
 import com.suvodeep.supergrocer.auth
 
-//@Preview
 @Composable
 fun AccountScreen(
     navController: NavController, superGrocerViewModel: SuperGrocerViewModel,
@@ -55,15 +53,12 @@ fun AccountScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-//            Icon(
-//                imageVector = Icons.Default.AccountCircle,
-//                contentDescription = "Account Logo",
-//                modifier = Modifier.size(100.dp),
-//                tint = Color.Gray
-//            )
-            LottieAnimation(composition = composition, modifier = Modifier.padding(top = 15.dp).size(150.dp).clip(RoundedCornerShape(CornerSize(200.dp))).background(Color.Gray.copy(0.2f)), iterations = 10000,
+            LottieAnimation(composition = composition,
+                modifier = Modifier.padding(top = 15.dp).size(150.dp)
+                    .clip(RoundedCornerShape(CornerSize(200.dp)))
+                    .background(Color.Green.copy(0.2f)),
+                iterations = 10000,
                 speed = 0.3f)
-//            Text("Suvodeep Guria", fontSize = 20.sp)
             Spacer(modifier = Modifier.height(20.dp))
 
             Column(

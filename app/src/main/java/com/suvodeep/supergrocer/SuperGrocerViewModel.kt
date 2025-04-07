@@ -160,10 +160,7 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException())
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
 
     }
@@ -186,10 +183,7 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException())
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
@@ -200,10 +194,6 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
             )
         }
     }
-
-//    fun getDiscount(discount:Int){
-//        _discount.value=discount
-//    }
 
 //    fun addedToCart(addedToCart:Int){
 //        _addedToCart.value=addedToCart
@@ -278,10 +268,7 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException())
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
@@ -306,18 +293,11 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException())
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
     fun removeAll(removeItem: InternetItem) {
-//        _cartItem.value = _cartItem.value.filter { it.itemName != item.itemName }
-//        viewModelScope.launch {
-//            saveCartItemToDataStore()
-//        }
         cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for(childSnapShot in dataSnapshot.children){
@@ -331,10 +311,7 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException())
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
@@ -404,22 +381,6 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
 
     fun yourOrder(order: HashMap<String,Any>){
         orderRef.push().setValue(order)
-//        orderRef.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for(childSnapShot in dataSnapshot.children){
-//                    val item=childSnapShot.getValue(InternetItem::class.java)
-//                    item?.let{
-//
-//                    }
-//
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // Failed to read value
-////                Log.w(TAG, "Failed to read value.", error.toException())
-//            }
-//        })
     }
 
     fun readOrdersFromDatabase() {
@@ -445,7 +406,7 @@ class SuperGrocerViewModel: ViewModel()/*(application: Application) : AndroidVie
         screenJob=viewModelScope.launch {
             delay(3000)
             toggleVisibility()
-//            loadAddressFromDataStore()
+//          loadAddressFromDataStore()
         }
         getInternetItems()
         readItemsFromDatabase()
