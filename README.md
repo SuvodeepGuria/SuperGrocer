@@ -12,7 +12,10 @@
 
 ## 📱 Screenshots
 ### Splash Screen
-![Screenshot_2025-05-14-20-08-53-55_ccc3f2746e05bbae1c8c0f743dcc8a19](https://github.com/user-attachments/assets/87e165b4-1f7d-4c5a-a4f1-b2495b5249c2) ### Login Screen ![Screenshot_2025-05-14-20-09-11-45_ccc3f2746e05bbae1c8c0f743dcc8a19](https://github.com/user-attachments/assets/a2602f55-b751-490f-b3e5-881bff918bb1)
+![Screenshot_2025-05-14-20-08-53-55_ccc3f2746e05bbae1c8c0f743dcc8a19](https://github.com/user-attachments/assets/87e165b4-1f7d-4c5a-a4f1-b2495b5249c2) 
+
+### Login Screen 
+![Screenshot_2025-05-14-20-09-11-45_ccc3f2746e05bbae1c8c0f743dcc8a19](https://github.com/user-attachments/assets/a2602f55-b751-490f-b3e5-881bff918bb1)
 
 ### Home Screen
 ![Screenshot_2025-05-14-20-10-43-77_ccc3f2746e05bbae1c8c0f743dcc8a19](https://github.com/user-attachments/assets/365950f2-6c12-475c-81d3-9ee7d0d069d1)
